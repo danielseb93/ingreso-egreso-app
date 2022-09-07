@@ -5,7 +5,6 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/login/login.component';
@@ -18,6 +17,10 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { environment } from 'src/environments/environment';
+
+import { StoreModule } from '@ngrx/store';
+import { uiReducer } from './shared/ui.reducer';
+
 
 @NgModule({
   declarations: [
@@ -38,7 +41,8 @@ import { environment } from 'src/environments/environment';
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    StoreModule.forRoot({ ui: uiReducer })
   ],
   providers: [],
   bootstrap: [AppComponent]
