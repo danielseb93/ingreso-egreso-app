@@ -16,10 +16,12 @@ import { DetalleComponent } from './ingreso-egreso/detalle/detalle.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
-import { environment } from 'src/environments/environment';
 
 import { StoreModule } from '@ngrx/store';
 import { uiReducer } from './shared/ui.reducer';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import { authReducer } from './auth/auth.reducer';
 
 
 @NgModule({
@@ -42,7 +44,8 @@ import { uiReducer } from './shared/ui.reducer';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
-    StoreModule.forRoot({ ui: uiReducer })
+    StoreModule.forRoot({ ui: uiReducer, user: authReducer }),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent]

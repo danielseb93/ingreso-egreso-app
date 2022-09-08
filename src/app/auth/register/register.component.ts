@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
+import * as uiActions from '../../shared/ui.actions';
 import Swal from 'sweetalert2';
+import { Subscription } from 'rxjs';
+import { AppState } from 'src/app/app.reducer';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-register',
@@ -12,39 +16,51 @@ import Swal from 'sweetalert2';
 })
 export class RegisterComponent implements OnInit {
 
-  registroForm!: FormGroup;
+  registerForm!: UntypedFormGroup;
+  loading: boolean = false;
+  uiSubscription: Subscription = new Subscription;
 
   constructor( 
     private authService: AuthService,
-    private fb: FormBuilder,
-    private router: Router
+    private fb: UntypedFormBuilder,
+    private router: Router,
+    private store: Store<AppState>
   ) { }
 
   ngOnInit(): void {
-    this.registroForm = this.fb.group({
+    this.registerForm = this.fb.group({
       nombre:  ['', Validators.required],
       correo:  ['', [Validators.required, Validators.email]],
       password:  ['', Validators.required],
     });
+    //Selector
+    this.uiSubscription = this.store.select('ui')
+                          .subscribe( ui =>  this.loading = ui.isLoading );
+  }
+
+  ngOnDestroy(): void {
+    this.uiSubscription.unsubscribe();
   }
 
   crearUsuario(){
-    if( this.registroForm.invalid ) { return; }
-    const { nombre, correo, password } = this.registroForm.value;
+    if( this.registerForm.invalid ) { return; }
+    const { nombre, correo, password } = this.registerForm.value;
     
-    Swal.fire({
+    /* Swal.fire({
       title: 'Espere por favor',
       didOpen: () => {
         Swal.showLoading();
       }
-    })
+    }) */
 
     this.authService.crearUsuario( nombre, correo, password )
       .then( credenciales => {
-        Swal.close();
+        //Swal.close();
+        this.store.dispatch(uiActions.stopLoading());
         this.router.navigate(['/']);
       })
       .catch( err => {
+        this.store.dispatch(uiActions.stopLoading());
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
