@@ -31,7 +31,7 @@ export class AuthService {
             this.store.dispatch(authActions.setUser({ user: tempUser }));
           } )
       } else{
-        //this.store.dispatch(authActions.unSetUser());
+        this.store.dispatch(authActions.unSetUser());
       }
     })
   }
