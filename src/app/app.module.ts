@@ -22,6 +22,10 @@ import { uiReducer } from './shared/ui.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { authReducer } from './auth/auth.reducer';
+import { ingresoEgresoReducer } from './ingreso-egreso/ingreso-egreso.reducer';
+import { OrdenIngresoEgresoPipe } from './pipes/orden-ingreso-egreso.pipe';
+import { NgChartsModule } from 'ng2-charts';
+
 
 
 @NgModule({
@@ -35,7 +39,8 @@ import { authReducer } from './auth/auth.reducer';
     DetalleComponent,
     FooterComponent,
     NavbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    OrdenIngresoEgresoPipe
   ],
   imports: [
     BrowserModule,
@@ -44,8 +49,9 @@ import { authReducer } from './auth/auth.reducer';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
-    StoreModule.forRoot({ ui: uiReducer, user: authReducer }),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
+    StoreModule.forRoot({ ui: uiReducer, user: authReducer, ingresoEgreso: ingresoEgresoReducer }),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    NgChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -22,6 +22,8 @@
     "@ngrx/store": "^14.3.0",
     "@ngrx/store-devtools": "^14.3.0",
     "bootstrap": "^5.2.0",
+    "chart.js": "^3.9.1",
+    "ng2-charts": "^4.0.1",
     "rxjs": "~7.5.0",
     "sweetalert2": "^11.4.29",
     "tslib": "^2.3.0",
